@@ -1,8 +1,8 @@
 /**
-*This code is an example of sending and recieving json data from server(Laravel is used Here)
-*Deserialize json data 
-*posting json data as json string in server in post method with httpclient
-* by Debarun Saha
+  This code is an example of sending and recieving json data from server(Laravel is used Here)
+  Deserialize json data
+  posting json data as json string in server in post method with httpclient
+  by Debarun Saha
 */
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -10,7 +10,7 @@
 
 const char* ssid       = "NETGEAR77";
 const char* password   = "coolship269";
- String HOST = "http://921709fa.ngrok.io";
+String HOST = "http://921709fa.ngrok.io";
 StaticJsonDocument<200> doc;
 StaticJsonDocument<200> postJson;
 void setup()
@@ -31,9 +31,11 @@ void loop()
 {
 
 
-  httpGet();
-  Serial.println("----------");
-  httPost();
+  //  httpGet();
+  //  Serial.println("----------");
+  //  httPost();
+  //  delay(300000);
+  jsonDataPost();
   delay(300000);
 }
 
@@ -84,4 +86,30 @@ void httpGet() {
   } else {
     Serial.println("wifi err");
   }
+}
+
+void jsonDataPost() {
+  StaticJsonDocument<128> jsonDoc;
+  JsonObject stateObj = jsonDoc.createNestedObject("state");
+  JsonObject reportedObj = stateObj.createNestedObject("reported");
+  JsonObject desiredObj = stateObj.createNestedObject("desired");
+  JsonObject locationObj = reportedObj.createNestedObject("location");
+  locationObj["latitude"] = 22.54;
+  locationObj["longitude"] = 88.72;
+  char jsonBuffer[512];
+  serializeJson(jsonDoc, jsonBuffer);
+    Serial.println(jsonBuffer);
+  HTTPClient httPost;
+  httPost.begin("http://817946cb.ngrok.io/api/arduino-json");
+  httPost.addHeader("Content-Type", "application/json");
+  int httpResponceCode = httPost.POST(jsonBuffer);
+  if (httpResponceCode > 0) {
+    String response = httPost.getString();
+    Serial.println(httpResponceCode);
+    Serial.println(response);
+  } else {
+    Serial.print("err:");
+    Serial.println(httpResponceCode);
+  }
+  httPost.end();
 }
