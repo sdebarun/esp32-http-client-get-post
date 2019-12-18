@@ -7,10 +7,11 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#define HOST "http://4154d15d.ngrok.io"
 
 const char* ssid       = "NETGEAR77";
 const char* password   = "coolship269";
-String HOST = "http://921709fa.ngrok.io";
+
 StaticJsonDocument<200> doc;
 StaticJsonDocument<200> postJson;
 void setup()
@@ -100,7 +101,7 @@ void jsonDataPost() {
   serializeJson(jsonDoc, jsonBuffer);
     Serial.println(jsonBuffer);
   HTTPClient httPost;
-  httPost.begin("http://817946cb.ngrok.io/api/arduino-json");
+  httPost.begin(HOST"/api/arduino-json");
   httPost.addHeader("Content-Type", "application/json");
   int httpResponceCode = httPost.POST(jsonBuffer);
   if (httpResponceCode > 0) {
