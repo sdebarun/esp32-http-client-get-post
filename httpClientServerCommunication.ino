@@ -9,8 +9,8 @@
 #include <ArduinoJson.h>
 #define HOST "http://4154d15d.ngrok.io"
 
-const char* ssid       = "NETGEAR77";
-const char* password   = "coolship269";
+const char* ssid       = "xxx";
+const char* password   = "xxx";
 
 StaticJsonDocument<200> doc;
 StaticJsonDocument<200> postJson;
